@@ -19,15 +19,20 @@ def RoomView(request):
 class CreateRoomView(APIView):
     serializer_class = CreateRoomSerializer
     def post(self,request,format=None):
+        print('started')
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
             
         serializer = self.serializer_class(data=request.data)
+        print(serializer)
         if serializer.is_valid():
             guest_can_pause = serializer.data.get('guest_can_pause')
             votes_to_skip = serializer.data.get('votes_to_skip')  
             host = self.request.session.session_key
+            print("found",Room.objects.filter(host=host))
             queryset = Room.objects.filter(host=host)
+            print("queryset",queryset)
+            
             if queryset.exists():
                 room = queryset[0]
                 room.guest_can_pause = guest_can_pause
@@ -75,11 +80,13 @@ def leaveSession(request):
         
 @api_view(['PATCH'])
 def updateroom(request):
+    print("started")
     user_id = request.session.session_key
     if not user_id:
         request.session.create()
 
     serializer = UpdateRoomSerializer(data=request.data)
+    print(serializer)
     if not serializer.is_valid():
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -150,7 +150,7 @@ function Room() {
       <Badge bg='dark' text='light'> {song.title} </Badge>
       </h3>
 
-      <h4> {song.artist}</h4>
+      <h4>  <Badge bg='secondary' > {song.artist} </Badge></h4> 
       </center> 
       <ProgressBar now={SongProgress} ></ProgressBar>
        

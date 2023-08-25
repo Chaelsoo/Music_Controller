@@ -21,6 +21,7 @@ def AuthURL(request):
 def spotify_callback(request):
     code = request.GET.get('code')
     error = request.GET.get('error')
+    print("hello there")
     
     response = post('https://accounts.spotify.com/api/token',data={
         'grant_type':'authorization_code',
@@ -67,7 +68,6 @@ def CurrentSong(request):
     response = execute_call(host,endpoint)
     if 'error' in response or 'item' not in response:
         return Response({'Issue':'User Logged Off'},status=status.HTTP_204_NO_CONTENT)
-    
     item = response.get('item')
     duration = item.get('duration_ms')
     progress = response.get('progress_ms')
